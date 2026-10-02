@@ -166,7 +166,11 @@ and the port is selected automatically. For local-only collaboration:
 
 Edit the shared buffer rather than the original source. Guests cannot save the original
 through this plugin. Source-buffer changes or external disk changes prevent the owner
-from overwriting them. Disconnecting retains the shared buffer's text.
+from overwriting them. Disconnecting shows a notification. If the shared text
+matches the loaded source and no edits are pending, its windows return to the
+source without changing splits, and the redundant shared buffer is removed.
+Otherwise a `[disconnected]` snapshot remains; copy its text into a normal buffer
+to save it. Disconnect never overwrites or reloads the source.
 
 Public Lua entry points mirror the commands:
 

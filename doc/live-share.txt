@@ -7,7 +7,10 @@ COMMANDS                                            *live-share-commands*
 :LiveShareJoin [host port token]
     Join the current source's advertised session, or an explicit session.
 :LiveShareStop
-    Disconnect. The owner also stops the server. Shared text is retained.
+    Disconnect with a notification. The owner also stops the server.
+    Identical shared buffers return to the loaded source and are removed without
+    closing splits. Other text stays in a [disconnected] snapshot; copy it into
+    a normal buffer to save. The source is never overwritten or reloaded.
 :LiveShareStatus
     Display role, revision, pending edits and peer cursor locations.
 
