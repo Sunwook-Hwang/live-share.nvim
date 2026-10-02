@@ -1,4 +1,4 @@
-# collabo.nvim
+# collab.nvim
 
 Live collaboration between independent Neovim processes, with no plugin dependencies
 and no external server executable. Edit together across nodes that share a file over
@@ -31,9 +31,9 @@ In `init.lua`:
 
 ```lua
 vim.pack.add({
-    { src = "https://github.com/Sunwook-Hwang/collabo.nvim" },
+    { src = "https://github.com/Sunwook-Hwang/collab.nvim" },
 })
-require("collabo").setup({ keymaps = true })
+require("collab").setup({ keymaps = true })
 ```
 
 ### lazy.nvim
@@ -42,9 +42,9 @@ Add to your plugin specifications:
 
 ```lua
 {
-    "Sunwook-Hwang/collabo.nvim",
+    "Sunwook-Hwang/collab.nvim",
     lazy = false, -- Register discovery before source files are read.
-    main = "collabo",
+    main = "collab",
     opts = { keymaps = true },
 }
 ```
@@ -59,9 +59,9 @@ For existing packer configurations, inside `require("packer").startup(function(u
 
 ```lua
 use({
-    "Sunwook-Hwang/collabo.nvim",
+    "Sunwook-Hwang/collab.nvim",
     config = function()
-        require("collabo").setup({ keymaps = true })
+        require("collab").setup({ keymaps = true })
     end,
 })
 ```
@@ -73,13 +73,13 @@ Run `:PackerSync`. Packer is no longer maintained; this example supports existin
 Inside your `plug#begin()` / `plug#end()` block:
 
 ```vim
-Plug 'Sunwook-Hwang/collabo.nvim'
+Plug 'Sunwook-Hwang/collab.nvim'
 ```
 
 After `call plug#end()`:
 
 ```vim
-lua require('collabo').setup({ keymaps = true })
+lua require('collab').setup({ keymaps = true })
 ```
 
 Run `:PlugInstall`.
@@ -89,8 +89,8 @@ Run `:PlugInstall`.
 Copy the entire package directory and add its absolute path to `init.lua`:
 
 ```lua
-vim.opt.runtimepath:prepend(vim.fn.expand("~/src/collabo.nvim"))
-require("collabo").setup({
+vim.opt.runtimepath:prepend(vim.fn.expand("~/src/collab.nvim"))
+require("collab").setup({
     discovery = true,
     max_peers = 8, -- Includes the owner; 2–64.
     keymaps = true,
@@ -174,10 +174,10 @@ to save it. Disconnect never overwrites or reloads the source.
 Public Lua entry points mirror the commands:
 
 ```lua
-require("collabo").start({ "0", "127.0.0.1" })
-require("collabo").join({ "host", "12345", "token" })
-require("collabo").status()
-require("collabo").stop()
+require("collab").start({ "0", "127.0.0.1" })
+require("collab").join({ "host", "12345", "token" })
+require("collab").status()
+require("collab").stop()
 ```
 
 ## Safety and limits

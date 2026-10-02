@@ -1,6 +1,6 @@
-*collabo.txt*  Native live collaboration for Neovim 0.12+
+*collab.txt*  Native live collaboration for Neovim 0.12+
 
-COMMANDS                                            *collabo-commands*
+COMMANDS                                            *collab-commands*
 
 :LiveShare [port] [bind-address]
     Share the current named UTF-8 source buffer. Default: free port, 0.0.0.0.
@@ -17,9 +17,9 @@ COMMANDS                                            *collabo-commands*
 Use u and CTRL-R for your own shared edits. Only the owner can :write.
 TCP is unencrypted. Keep tokens private and use a trusted network or tunnel.
 
-SETUP                                               *collabo-setup*
+SETUP                                               *collab-setup*
 >
-    require("collabo").setup({ discovery = true, max_peers = 8, keymaps = true })
+    require("collab").setup({ discovery = true, max_peers = 8, keymaps = true })
 <
 Suggested normal-mode keys (off by default; existing maps are preserved):
     <leader>Cs   Start sharing
@@ -30,10 +30,10 @@ C is uppercase. Press your leader key, Shift+c, then s/j/q/i.
 Define mapleader before loading the plugin.
 Set keymaps=false to use your own mappings. Commands always remain available.
 
-INSTALLATION                                        *collabo-install*
+INSTALLATION                                        *collab-install*
 >
-    vim.pack.add({{ src = "https://github.com/Sunwook-Hwang/collabo.nvim" }})
-    require("collabo").setup({ keymaps = true })
+    vim.pack.add({{ src = "https://github.com/Sunwook-Hwang/collab.nvim" }})
+    require("collab").setup({ keymaps = true })
 <
 See README.md for lazy.nvim, packer.nvim and vim-plug examples. Private
 repositories require Git authentication with access to the repository.
