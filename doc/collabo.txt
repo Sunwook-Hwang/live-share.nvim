@@ -1,6 +1,6 @@
-*live-share.txt*  Native live collaboration for Neovim 0.12+
+*collabo.txt*  Native live collaboration for Neovim 0.12+
 
-COMMANDS                                            *live-share-commands*
+COMMANDS                                            *collabo-commands*
 
 :LiveShare [port] [bind-address]
     Share the current named UTF-8 source buffer. Default: free port, 0.0.0.0.
@@ -17,23 +17,23 @@ COMMANDS                                            *live-share-commands*
 Use u and CTRL-R for your own shared edits. Only the owner can :write.
 TCP is unencrypted. Keep tokens private and use a trusted network or tunnel.
 
-SETUP                                               *live-share-setup*
+SETUP                                               *collabo-setup*
 >
-    require("live-share").setup({ discovery = true, max_peers = 8, keymaps = true })
+    require("collabo").setup({ discovery = true, max_peers = 8, keymaps = true })
 <
 Suggested normal-mode keys (off by default; existing maps are preserved):
-    <leader>Ls   Start sharing
-    <leader>Lj   Join the current file's session
-    <leader>Lq   Disconnect / stop hosting
-    <leader>Li   Show session information
-L is uppercase. Press your leader key, Shift+l, then s/j/q/i.
+    <leader>Cs   Start sharing
+    <leader>Cj   Join the current file's session
+    <leader>Cq   Disconnect / stop hosting
+    <leader>Ci   Show session information
+C is uppercase. Press your leader key, Shift+c, then s/j/q/i.
 Define mapleader before loading the plugin.
 Set keymaps=false to use your own mappings. Commands always remain available.
 
-INSTALLATION                                        *live-share-install*
+INSTALLATION                                        *collabo-install*
 >
-    vim.pack.add({{ src = "https://github.com/Sunwook-Hwang/live-share.nvim" }})
-    require("live-share").setup({ keymaps = true })
+    vim.pack.add({{ src = "https://github.com/Sunwook-Hwang/collabo.nvim" }})
+    require("collabo").setup({ keymaps = true })
 <
 See README.md for lazy.nvim, packer.nvim and vim-plug examples. Private
 repositories require Git authentication with access to the repository.

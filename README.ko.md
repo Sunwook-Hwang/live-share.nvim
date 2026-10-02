@@ -1,4 +1,4 @@
-# live-share.nvim
+# collabo.nvim
 
 독립 Neovim 프로세스 사이의 실시간 공동 편집 플러그인입니다.
 다른 플러그인이나 외부 서버 실행 파일이 필요하지 않습니다.
@@ -13,8 +13,7 @@ NFS로 같은 파일을 보는 서로 다른 노드에서도 사용할 수 있�
 
 ## 설치
 
-아래 GitHub 예시는 공개 전환 후 그대로 사용할 수 있습니다.
-현재 비공개 상태에서는 저장소 접근 권한이 있는 계정의 Git 인증이 필요합니다.
+공개 저장소에서 설치할 수 있습니다.
 설치 방법 하나만 선택하세요. `<leader>`는 사용자가 설정한 리더 키를 뜻합니다.
 `vim.g.mapleader`는 플러그인 로드 전에 지정합니다. Neovim 0.12 이상이 필요합니다.
 
@@ -24,9 +23,9 @@ NFS로 같은 파일을 보는 서로 다른 노드에서도 사용할 수 있�
 
 ```lua
 vim.pack.add({
-    { src = "https://github.com/Sunwook-Hwang/live-share.nvim" },
+    { src = "https://github.com/Sunwook-Hwang/collabo.nvim" },
 })
-require("live-share").setup({ keymaps = true })
+require("collabo").setup({ keymaps = true })
 ```
 
 ### lazy.nvim
@@ -35,9 +34,9 @@ require("live-share").setup({ keymaps = true })
 
 ```lua
 {
-    "Sunwook-Hwang/live-share.nvim",
+    "Sunwook-Hwang/collabo.nvim",
     lazy = false, -- 파일 읽기 전에 자동 참가 안내를 등록합니다.
-    main = "live-share",
+    main = "collabo",
     opts = { keymaps = true },
 }
 ```
@@ -51,9 +50,9 @@ require("live-share").setup({ keymaps = true })
 
 ```lua
 use({
-    "Sunwook-Hwang/live-share.nvim",
+    "Sunwook-Hwang/collabo.nvim",
     config = function()
-        require("live-share").setup({ keymaps = true })
+        require("collabo").setup({ keymaps = true })
     end,
 })
 ```
@@ -65,13 +64,13 @@ use({
 `plug#begin()` / `plug#end()` 사이에 추가합니다.
 
 ```vim
-Plug 'Sunwook-Hwang/live-share.nvim'
+Plug 'Sunwook-Hwang/collabo.nvim'
 ```
 
 `call plug#end()` 뒤에 추가합니다.
 
 ```vim
-lua require('live-share').setup({ keymaps = true })
+lua require('collabo').setup({ keymaps = true })
 ```
 
 `:PlugInstall`로 설치합니다.
@@ -81,8 +80,8 @@ lua require('live-share').setup({ keymaps = true })
 패키지 폴더 전체를 복사하고 `init.lua`에 절대 경로를 추가합니다.
 
 ```lua
-vim.opt.runtimepath:prepend(vim.fn.expand("~/src/live-share.nvim"))
-require("live-share").setup({
+vim.opt.runtimepath:prepend(vim.fn.expand("~/src/collabo.nvim"))
+require("collabo").setup({
     discovery = true,
     max_peers = 8, -- 주최자 포함, 2~64명
     keymaps = true,
@@ -101,16 +100,16 @@ require("live-share").setup({
 
 `setup({ keymaps = true })`로 일반 모드 단축키를 등록합니다.
 기본값은 꺼짐이며 이미 등록된 키는 덮어쓰지 않습니다.
-`L`은 대문자이므로 Shift+l입니다. `<leader>Ls`는 리더 키 → Shift+l → s입니다.
+`C`은 대문자이므로 Shift+c입니다. `<leader>Cs`는 리더 키 → Shift+c → s입니다.
 각 키에 설명도 등록하므로 키맵 목록이나 설치된 which-key에서 확인할 수 있습니다.
 which-key 자체는 필요하지 않습니다.
 
 | 키 | 명령 | 동작 |
 | --- | --- | --- |
-| `<leader>Ls` | `:LiveShare` | 현재 소스 공유 시작 (start) |
-| `<leader>Lj` | `:LiveShareJoin` | 현재 파일의 안내된 세션 참여 (join) |
-| `<leader>Lq` | `:LiveShareStop` | 연결 종료 / 주최 서버 종료 (quit) |
-| `<leader>Li` | `:LiveShareStatus` | 세션 상태 확인 (info) |
+| `<leader>Cs` | `:LiveShare` | 현재 소스 공유 시작 (start) |
+| `<leader>Cj` | `:LiveShareJoin` | 현재 파일의 안내된 세션 참여 (join) |
+| `<leader>Cq` | `:LiveShareStop` | 연결 종료 / 주최 서버 종료 (quit) |
+| `<leader>Ci` | `:LiveShareStatus` | 세션 상태 확인 (info) |
 
 주소·포트·토큰을 직접 지정할 때는 `:LiveShareJoin 주소 포트 토큰`을 사용합니다.
 다른 키를 쓰려면 `keymaps = false`로 두고 직접 등록합니다.

@@ -1,4 +1,4 @@
-# live-share.nvim
+# collabo.nvim
 
 Live collaboration between independent Neovim processes, with no plugin dependencies
 and no external server executable. Edit together across nodes that share a file over
@@ -22,8 +22,7 @@ changes and cursors. Only the owner saves the shared result to the original file
 
 ## Installation
 
-The GitHub examples below are ready for public release. While the repository is
-private, Git must authenticate with an account that has access. Choose one method.
+Choose one installation method below.
 `<leader>` refers to your configured leader key; set `vim.g.mapleader` before loading plugins.
 
 ### Native `vim.pack` (Neovim 0.12+)
@@ -32,9 +31,9 @@ In `init.lua`:
 
 ```lua
 vim.pack.add({
-    { src = "https://github.com/Sunwook-Hwang/live-share.nvim" },
+    { src = "https://github.com/Sunwook-Hwang/collabo.nvim" },
 })
-require("live-share").setup({ keymaps = true })
+require("collabo").setup({ keymaps = true })
 ```
 
 ### lazy.nvim
@@ -43,9 +42,9 @@ Add to your plugin specifications:
 
 ```lua
 {
-    "Sunwook-Hwang/live-share.nvim",
+    "Sunwook-Hwang/collabo.nvim",
     lazy = false, -- Register discovery before source files are read.
-    main = "live-share",
+    main = "collabo",
     opts = { keymaps = true },
 }
 ```
@@ -60,9 +59,9 @@ For existing packer configurations, inside `require("packer").startup(function(u
 
 ```lua
 use({
-    "Sunwook-Hwang/live-share.nvim",
+    "Sunwook-Hwang/collabo.nvim",
     config = function()
-        require("live-share").setup({ keymaps = true })
+        require("collabo").setup({ keymaps = true })
     end,
 })
 ```
@@ -74,13 +73,13 @@ Run `:PackerSync`. Packer is no longer maintained; this example supports existin
 Inside your `plug#begin()` / `plug#end()` block:
 
 ```vim
-Plug 'Sunwook-Hwang/live-share.nvim'
+Plug 'Sunwook-Hwang/collabo.nvim'
 ```
 
 After `call plug#end()`:
 
 ```vim
-lua require('live-share').setup({ keymaps = true })
+lua require('collabo').setup({ keymaps = true })
 ```
 
 Run `:PlugInstall`.
@@ -90,8 +89,8 @@ Run `:PlugInstall`.
 Copy the entire package directory and add its absolute path to `init.lua`:
 
 ```lua
-vim.opt.runtimepath:prepend(vim.fn.expand("~/src/live-share.nvim"))
-require("live-share").setup({
+vim.opt.runtimepath:prepend(vim.fn.expand("~/src/collabo.nvim"))
+require("collabo").setup({
     discovery = true,
     max_peers = 8, -- Includes the owner; 2–64.
     keymaps = true,
@@ -110,16 +109,16 @@ and [vim-plug](https://github.com/junegunn/vim-plug) interfaces.
 
 Enable the suggested normal-mode mappings with `setup({ keymaps = true })`.
 They are off by default and existing mappings are never overwritten.
-`L` is uppercase (Shift+l); `<leader>Ls` means your leader key, Shift+l, then s.
+`C` is uppercase (Shift+c); `<leader>Cs` means your leader key, Shift+c, then s.
 Descriptions appear in keymap listings and which-key if you already use it; no
 which-key dependency is required.
 
 | Key | Command | Purpose |
 | --- | --- | --- |
-| `<leader>Ls` | `:LiveShare` | Start sharing the current source (s: start) |
-| `<leader>Lj` | `:LiveShareJoin` | Join the current file's advertised session (j: join) |
-| `<leader>Lq` | `:LiveShareStop` | Disconnect / stop hosting (q: quit) |
-| `<leader>Li` | `:LiveShareStatus` | Show session information (i: info) |
+| `<leader>Cs` | `:LiveShare` | Start sharing the current source (s: start) |
+| `<leader>Cj` | `:LiveShareJoin` | Join the current file's advertised session (j: join) |
+| `<leader>Cq` | `:LiveShareStop` | Disconnect / stop hosting (q: quit) |
+| `<leader>Ci` | `:LiveShareStatus` | Show session information (i: info) |
 
 For manual host/port/token entry, use `:LiveShareJoin host port token`.
 To use other keys, leave `keymaps = false` and map the commands yourself:
@@ -175,10 +174,10 @@ to save it. Disconnect never overwrites or reloads the source.
 Public Lua entry points mirror the commands:
 
 ```lua
-require("live-share").start({ "0", "127.0.0.1" })
-require("live-share").join({ "host", "12345", "token" })
-require("live-share").status()
-require("live-share").stop()
+require("collabo").start({ "0", "127.0.0.1" })
+require("collabo").join({ "host", "12345", "token" })
+require("collabo").status()
+require("collabo").stop()
 ```
 
 ## Safety and limits
