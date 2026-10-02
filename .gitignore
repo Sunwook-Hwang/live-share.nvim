@@ -1,0 +1,5 @@
+.*.flash-share
+.*.flash-share.*
+/tests/
+*.log
+/doc/tags

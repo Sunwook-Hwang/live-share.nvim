@@ -1,0 +1,29 @@
+*live-share.txt*  Native live collaboration for Neovim 0.12+
+
+COMMANDS                                            *live-share-commands*
+
+:LiveShare [port] [bind-address]
+    Share the current named UTF-8 source buffer. Default: free port, 0.0.0.0.
+:LiveShareJoin [host port token]
+    Join the current source's advertised session, or an explicit session.
+:LiveShareStop
+    Disconnect. The owner also stops the server. Shared text is retained.
+:LiveShareStatus
+    Display role, revision, pending edits and peer cursor locations.
+
+Use u and CTRL-R for your own shared edits. Only the owner can :write.
+TCP is unencrypted. Keep tokens private and use a trusted network or tunnel.
+
+SETUP                                               *live-share-setup*
+>
+    require("live-share").setup({ discovery = true, max_peers = 8 })
+<
+max_peers includes the owner (2-64). Sidecars use .<name>.flash-share for
+compatibility with FLASH. Only the active source editor prompts to join.
+Safe Git exclusion or sidecar write failures leave manual joining available.
+Source conflicts block saving. Maximum document size: 1 MiB.
+Shared acwrite buffers do not automatically attach language servers.
+
+See README.md and README.ko.md for installation and the full safety model.
+
+ vim:tw=78:ts=8:noet:ft=help:norl:
