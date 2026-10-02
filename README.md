@@ -7,6 +7,12 @@ NFS, or join directly by host, port and token.
 The source lives on disk; unsaved edits and peer cursors travel over TCP. Sharing
 an NFS path alone does not provide a network connection between the editors.
 
+## Example: pair debugging across servers
+
+Two developers open the same NFS file on different servers. One runs `:LiveShare`;
+the other accepts the join prompt. They edit together and see each other's unsaved
+changes and cursors. Only the owner saves the shared result to the original file.
+
 ## Requirements
 
 - Neovim 0.12 or newer on Linux or macOS.
@@ -14,22 +20,115 @@ an NFS path alone does not provide a network connection between the editors.
 - Git is used only to exclude session credentials when advertising inside a Git repository.
   Without safe exclusion, manual sharing still works.
 
-## Local installation
+## Installation
 
-Add the package directory to your `init.lua` before loading plugins:
+The GitHub examples below are ready for public release. While the repository is
+private, Git must authenticate with an account that has access. Choose one method.
+`<leader>` refers to your configured leader key; set `vim.g.mapleader` before loading plugins.
+
+### Native `vim.pack` (Neovim 0.12+)
+
+In `init.lua`:
 
 ```lua
-vim.opt.runtimepath:prepend("/Users/sunwookh/01_code/live-share.nvim")
-require("live-share").setup({
-    discovery = true,
-    max_peers = 8, -- Includes the owner; 2–64.
+vim.pack.add({
+    { src = "https://github.com/Sunwook-Hwang/live-share.nvim" },
+})
+require("live-share").setup({ keymaps = true })
+```
+
+### lazy.nvim
+
+Add to your plugin specifications:
+
+```lua
+{
+    "Sunwook-Hwang/live-share.nvim",
+    lazy = false, -- Register discovery before source files are read.
+    main = "live-share",
+    opts = { keymaps = true },
+}
+```
+
+Only the small setup module loads at startup. Transport and edit algorithms remain
+lazy-loaded until sharing is used. Loading only on commands would miss automatic
+join discovery for files opened before the plugin loads.
+
+### packer.nvim
+
+For existing packer configurations, inside `require("packer").startup(function(use)`:
+
+```lua
+use({
+    "Sunwook-Hwang/live-share.nvim",
+    config = function()
+        require("live-share").setup({ keymaps = true })
+    end,
 })
 ```
 
-Use the equivalent absolute directory on other machines. There is no dependency on
-FLASH, dotfiles, a language server or Treesitter. Commands also register automatically
-when installed as a native `pack/*/start` plugin. Transport code stays unloaded until
-it is needed; discovery performs one filesystem check per source-file read.
+Run `:PackerSync`. Packer is no longer maintained; this example supports existing users.
+
+### vim-plug
+
+Inside your `plug#begin()` / `plug#end()` block:
+
+```vim
+Plug 'Sunwook-Hwang/live-share.nvim'
+```
+
+After `call plug#end()`:
+
+```vim
+lua require('live-share').setup({ keymaps = true })
+```
+
+Run `:PlugInstall`.
+
+### Local checkout / disconnected machine
+
+Copy the entire package directory and add its absolute path to `init.lua`:
+
+```lua
+vim.opt.runtimepath:prepend(vim.fn.expand("~/src/live-share.nvim"))
+require("live-share").setup({
+    discovery = true,
+    max_peers = 8, -- Includes the owner; 2–64.
+    keymaps = true,
+})
+```
+
+Change the path to your checkout. There is no dependency on FLASH, dotfiles, a language
+server or Treesitter. Commands also register automatically when installed as a native
+`pack/*/start` plugin. Discovery performs one filesystem check per source-file read.
+
+The examples follow the official [vim.pack](https://neovim.io/doc/user/pack.html),
+[lazy.nvim](https://lazy.folke.io/spec), [packer.nvim](https://github.com/wbthomason/packer.nvim)
+and [vim-plug](https://github.com/junegunn/vim-plug) interfaces.
+
+## Keymaps
+
+Enable the suggested normal-mode mappings with `setup({ keymaps = true })`.
+They are off by default and existing mappings are never overwritten.
+`L` is uppercase (Shift+l); `<leader>Ls` means your leader key, Shift+l, then s.
+Descriptions appear in keymap listings and which-key if you already use it; no
+which-key dependency is required.
+
+| Key | Command | Purpose |
+| --- | --- | --- |
+| `<leader>Ls` | `:LiveShare` | Start sharing the current source (s: start) |
+| `<leader>Lj` | `:LiveShareJoin` | Join the current file's advertised session (j: join) |
+| `<leader>Lq` | `:LiveShareStop` | Disconnect / stop hosting (q: quit) |
+| `<leader>Li` | `:LiveShareStatus` | Show session information (i: info) |
+
+For manual host/port/token entry, use `:LiveShareJoin host port token`.
+To use other keys, leave `keymaps = false` and map the commands yourself:
+
+```lua
+vim.keymap.set("n", "<leader>cs", "<Cmd>LiveShare<CR>", {
+    desc = "Live share: start sharing",
+})
+```
 
 ## Usage
 

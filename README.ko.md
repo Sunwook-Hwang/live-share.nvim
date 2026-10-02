@@ -5,22 +5,121 @@
 NFS로 같은 파일을 보는 서로 다른 노드에서도 사용할 수 있습니다.
 편집 내용과 참가자 커서는 TCP로 전송하므로 노드 사이의 포트 연결이 필요합니다.
 
+## 예시: 서로 다른 서버에서 함께 디버깅
+
+두 사람이 서로 다른 서버에서 같은 NFS 파일을 엽니다. 한 사람이 `:LiveShare`를
+실행하고 다른 사람이 참여 안내를 수락하면, 저장 전 편집과 커서를 함께 볼 수 있습니다.
+완성된 내용은 주최자가 원본 파일에 저장합니다.
+
 ## 설치
 
-Linux·macOS의 Neovim 0.12 이상을 기준으로 합니다. `init.lua`에 추가합니다.
+아래 GitHub 예시는 공개 전환 후 그대로 사용할 수 있습니다.
+현재 비공개 상태에서는 저장소 접근 권한이 있는 계정의 Git 인증이 필요합니다.
+설치 방법 하나만 선택하세요. `<leader>`는 사용자가 설정한 리더 키를 뜻합니다.
+`vim.g.mapleader`는 플러그인 로드 전에 지정합니다. Neovim 0.12 이상이 필요합니다.
+
+### 내장 `vim.pack`
+
+`init.lua`에 추가합니다.
 
 ```lua
-vim.opt.runtimepath:prepend("/Users/sunwookh/01_code/live-share.nvim")
-require("live-share").setup({
-    discovery = true,
-    max_peers = 8, -- 주최자 포함, 2~64명
+vim.pack.add({
+    { src = "https://github.com/Sunwook-Hwang/live-share.nvim" },
+})
+require("live-share").setup({ keymaps = true })
+```
+
+### lazy.nvim
+
+플러그인 목록에 추가합니다.
+
+```lua
+{
+    "Sunwook-Hwang/live-share.nvim",
+    lazy = false, -- 파일 읽기 전에 자동 참가 안내를 등록합니다.
+    main = "live-share",
+    opts = { keymaps = true },
+}
+```
+
+시작할 때는 작은 설정 모듈만 로드합니다. 연결·편집 연산 코드는 공유할 때 로드합니다.
+명령 실행 시에만 플러그인을 로드하면 그 전에 연 파일의 자동 참가 안내를 놓칠 수 있습니다.
+
+### packer.nvim
+
+기존 `require("packer").startup(function(use)` 안에 추가합니다.
+
+```lua
+use({
+    "Sunwook-Hwang/live-share.nvim",
+    config = function()
+        require("live-share").setup({ keymaps = true })
+    end,
 })
 ```
 
-다른 컴퓨터에서는 복사한 패키지의 절대 경로로 바꾸세요.
-FLASH·dotfiles·LSP·Treesitter에 의존하지 않습니다.
+`:PackerSync`로 설치합니다. Packer는 유지보수가 중단되어 기존 사용자를 위한 예시입니다.
+
+### vim-plug
+
+`plug#begin()` / `plug#end()` 사이에 추가합니다.
+
+```vim
+Plug 'Sunwook-Hwang/live-share.nvim'
+```
+
+`call plug#end()` 뒤에 추가합니다.
+
+```vim
+lua require('live-share').setup({ keymaps = true })
+```
+
+`:PlugInstall`로 설치합니다.
+
+### 로컬 복사 / 인터넷이 없는 환경
+
+패키지 폴더 전체를 복사하고 `init.lua`에 절대 경로를 추가합니다.
+
+```lua
+vim.opt.runtimepath:prepend(vim.fn.expand("~/src/live-share.nvim"))
+require("live-share").setup({
+    discovery = true,
+    max_peers = 8, -- 주최자 포함, 2~64명
+    keymaps = true,
+})
+```
+
+경로는 실제 복사한 위치로 바꾸세요. FLASH·dotfiles·LSP·Treesitter에 의존하지 않습니다.
 네이티브 `pack/*/start` 플러그인으로 설치하면 명령어도 자동 등록됩니다.
-연결 코드는 공유를 사용하기 전에는 로드하지 않으며, 자동 발견은 파일을 읽을 때 한 번만 검사합니다.
+자동 발견은 파일을 읽을 때 한 번만 검사합니다.
+
+예시는 공식 [vim.pack](https://neovim.io/doc/user/pack.html),
+[lazy.nvim](https://lazy.folke.io/spec), [packer.nvim](https://github.com/wbthomason/packer.nvim),
+[vim-plug](https://github.com/junegunn/vim-plug) 설치 방식에 맞췄습니다.
+
+## 단축키
+
+`setup({ keymaps = true })`로 일반 모드 단축키를 등록합니다.
+기본값은 꺼짐이며 이미 등록된 키는 덮어쓰지 않습니다.
+`L`은 대문자이므로 Shift+l입니다. `<leader>Ls`는 리더 키 → Shift+l → s입니다.
+각 키에 설명도 등록하므로 키맵 목록이나 설치된 which-key에서 확인할 수 있습니다.
+which-key 자체는 필요하지 않습니다.
+
+| 키 | 명령 | 동작 |
+| --- | --- | --- |
+| `<leader>Ls` | `:LiveShare` | 현재 소스 공유 시작 (start) |
+| `<leader>Lj` | `:LiveShareJoin` | 현재 파일의 안내된 세션 참여 (join) |
+| `<leader>Lq` | `:LiveShareStop` | 연결 종료 / 주최 서버 종료 (quit) |
+| `<leader>Li` | `:LiveShareStatus` | 세션 상태 확인 (info) |
+
+주소·포트·토큰을 직접 지정할 때는 `:LiveShareJoin 주소 포트 토큰`을 사용합니다.
+다른 키를 쓰려면 `keymaps = false`로 두고 직접 등록합니다.
+
+```lua
+vim.keymap.set("n", "<leader>cs", "<Cmd>LiveShare<CR>", {
+    desc = "Live share: start sharing",
+})
+```
 
 ## 사용
 

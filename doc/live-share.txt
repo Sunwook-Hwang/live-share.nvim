@@ -16,8 +16,25 @@ TCP is unencrypted. Keep tokens private and use a trusted network or tunnel.
 
 SETUP                                               *live-share-setup*
 >
-    require("live-share").setup({ discovery = true, max_peers = 8 })
+    require("live-share").setup({ discovery = true, max_peers = 8, keymaps = true })
 <
+Suggested normal-mode keys (off by default; existing maps are preserved):
+    <leader>Ls   Start sharing
+    <leader>Lj   Join the current file's session
+    <leader>Lq   Disconnect / stop hosting
+    <leader>Li   Show session information
+L is uppercase. Press your leader key, Shift+l, then s/j/q/i.
+Define mapleader before loading the plugin.
+Set keymaps=false to use your own mappings. Commands always remain available.
+
+INSTALLATION                                        *live-share-install*
+>
+    vim.pack.add({{ src = "https://github.com/Sunwook-Hwang/live-share.nvim" }})
+    require("live-share").setup({ keymaps = true })
+<
+See README.md for lazy.nvim, packer.nvim and vim-plug examples. Private
+repositories require Git authentication with access to the repository.
+
 max_peers includes the owner (2-64). Sidecars use .<name>.flash-share for
 compatibility with FLASH. Only the active source editor prompts to join.
 Safe Git exclusion or sidecar write failures leave manual joining available.

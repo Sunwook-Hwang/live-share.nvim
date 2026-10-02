@@ -1,5 +1,12 @@
 -- Transport and edit algorithms load only when starting/joining a session.
-local M = { config = { discovery = true, max_peers = 8 } }
+local M = { config = { discovery = true, max_peers = 8, keymaps = false } }
+local shortcuts = {
+	{ "<leader>Ls", "LiveShare", "Live share: start sharing" },
+	{ "<leader>Lj", "LiveShareJoin", "Live share: join current file" },
+	{ "<leader>Lq", "LiveShareStop", "Live share: disconnect" },
+	{ "<leader>Li", "LiveShareStatus", "Live share: session information" },
+}
+local registered = {}
 local actions = { LiveShare = "start", LiveShareJoin = "join", LiveShareStop = "stop", LiveShareStatus = "status" }
 for _, action in pairs(actions) do
 	M[action] = function(args)
@@ -13,6 +20,7 @@ function M.setup(opts)
 	opts = opts or {}
 	local config = vim.tbl_extend("force", M.config, opts)
 	vim.validate("discovery", config.discovery, "boolean")
+	vim.validate("keymaps", config.keymaps, "boolean")
 	vim.validate("max_peers", config.max_peers, "number")
 	assert(
 		config.max_peers >= 2 and config.max_peers <= 64 and config.max_peers == math.floor(config.max_peers),
@@ -26,6 +34,23 @@ function M.setup(opts)
 				vim.notify(tostring(err), vim.log.levels.ERROR)
 			end
 		end, { nargs = "*", force = true, desc = "Live buffer sharing: " .. action })
+	end
+	-- Remove only mappings still owned by us, including after a leader change.
+	for lhs, rhs in pairs(registered) do
+		if vim.fn.maparg(lhs, "n") == rhs then
+			vim.keymap.del("n", lhs)
+		end
+	end
+	registered = {}
+	if config.keymaps then
+		for _, shortcut in ipairs(shortcuts) do
+			local lhs, command, desc = unpack(shortcut)
+			if vim.fn.maparg(lhs, "n") == "" then
+				local rhs = "<Cmd>" .. command .. "<CR>"
+				vim.keymap.set("n", lhs, rhs, { silent = true, desc = desc })
+				registered[vim.fn.maparg(lhs, "n", false, true).lhs] = rhs
+			end
+		end
 	end
 	vim.api.nvim_create_autocmd("BufReadPost", {
 		group = vim.api.nvim_create_augroup("live-share-discovery", { clear = true }),
