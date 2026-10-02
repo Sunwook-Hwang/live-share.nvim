@@ -1,4 +1,4 @@
-# collab.nvim
+# peerpad.nvim
 
 독립 Neovim 프로세스 사이의 실시간 공동 편집 플러그인입니다.
 다른 플러그인이나 외부 서버 실행 파일이 필요하지 않습니다.
@@ -23,9 +23,9 @@ NFS로 같은 파일을 보는 서로 다른 노드에서도 사용할 수 있�
 
 ```lua
 vim.pack.add({
-    { src = "https://github.com/Sunwook-Hwang/collab.nvim" },
+    { src = "https://github.com/Sunwook-Hwang/peerpad.nvim" },
 })
-require("collab").setup({ keymaps = true })
+require("peerpad").setup({ keymaps = true })
 ```
 
 ### lazy.nvim
@@ -34,9 +34,9 @@ require("collab").setup({ keymaps = true })
 
 ```lua
 {
-    "Sunwook-Hwang/collab.nvim",
+    "Sunwook-Hwang/peerpad.nvim",
     lazy = false, -- 파일 읽기 전에 자동 참가 안내를 등록합니다.
-    main = "collab",
+    main = "peerpad",
     opts = { keymaps = true },
 }
 ```
@@ -50,9 +50,9 @@ require("collab").setup({ keymaps = true })
 
 ```lua
 use({
-    "Sunwook-Hwang/collab.nvim",
+    "Sunwook-Hwang/peerpad.nvim",
     config = function()
-        require("collab").setup({ keymaps = true })
+        require("peerpad").setup({ keymaps = true })
     end,
 })
 ```
@@ -64,13 +64,13 @@ use({
 `plug#begin()` / `plug#end()` 사이에 추가합니다.
 
 ```vim
-Plug 'Sunwook-Hwang/collab.nvim'
+Plug 'Sunwook-Hwang/peerpad.nvim'
 ```
 
 `call plug#end()` 뒤에 추가합니다.
 
 ```vim
-lua require('collab').setup({ keymaps = true })
+lua require('peerpad').setup({ keymaps = true })
 ```
 
 `:PlugInstall`로 설치합니다.
@@ -80,8 +80,8 @@ lua require('collab').setup({ keymaps = true })
 패키지 폴더 전체를 복사하고 `init.lua`에 절대 경로를 추가합니다.
 
 ```lua
-vim.opt.runtimepath:prepend(vim.fn.expand("~/src/collab.nvim"))
-require("collab").setup({
+vim.opt.runtimepath:prepend(vim.fn.expand("~/src/peerpad.nvim"))
+require("peerpad").setup({
     discovery = true,
     max_peers = 8, -- 주최자 포함, 2~64명
     keymaps = true,
