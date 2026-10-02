@@ -7,7 +7,7 @@ NFS로 같은 파일을 보는 서로 다른 노드에서도 사용할 수 있�
 
 ## 예시: 서로 다른 서버에서 함께 디버깅
 
-두 사람이 서로 다른 서버에서 같은 NFS 파일을 엽니다. 한 사람이 `:LiveShare`를
+두 사람이 서로 다른 서버에서 같은 NFS 파일을 엽니다. 한 사람이 `:Peerpad`를
 실행하고 다른 사람이 참여 안내를 수락하면, 저장 전 편집과 커서를 함께 볼 수 있습니다.
 완성된 내용은 주최자가 원본 파일에 저장합니다.
 
@@ -100,43 +100,43 @@ require("peerpad").setup({
 
 `setup({ keymaps = true })`로 일반 모드 단축키를 등록합니다.
 기본값은 꺼짐이며 이미 등록된 키는 덮어쓰지 않습니다.
-`C`은 대문자이므로 Shift+c입니다. `<leader>Cs`는 리더 키 → Shift+c → s입니다.
+`P`는 대문자이므로 Shift+p입니다. `<leader>Ps`는 리더 키 → Shift+p → s입니다.
 각 키에 설명도 등록하므로 키맵 목록이나 설치된 which-key에서 확인할 수 있습니다.
 which-key 자체는 필요하지 않습니다.
 
 | 키 | 명령 | 동작 |
 | --- | --- | --- |
-| `<leader>Cs` | `:LiveShare` | 현재 소스 공유 시작 (start) |
-| `<leader>Cj` | `:LiveShareJoin` | 현재 파일의 안내된 세션 참여 (join) |
-| `<leader>Cq` | `:LiveShareStop` | 연결 종료 / 주최 서버 종료 (quit) |
-| `<leader>Ci` | `:LiveShareStatus` | 세션 상태 확인 (info) |
+| `<leader>Ps` | `:Peerpad` | 현재 소스 공유 시작 (start) |
+| `<leader>Pj` | `:PeerpadJoin` | 현재 파일의 안내된 세션 참여 (join) |
+| `<leader>Pq` | `:PeerpadStop` | 연결 종료 / 주최 서버 종료 (quit) |
+| `<leader>Pi` | `:PeerpadStatus` | 세션 상태 확인 (info) |
 
-주소·포트·토큰을 직접 지정할 때는 `:LiveShareJoin 주소 포트 토큰`을 사용합니다.
+주소·포트·토큰을 직접 지정할 때는 `:PeerpadJoin 주소 포트 토큰`을 사용합니다.
 다른 키를 쓰려면 `keymaps = false`로 두고 직접 등록합니다.
 
 ```lua
-vim.keymap.set("n", "<leader>cs", "<Cmd>LiveShare<CR>", {
-    desc = "Live share: start sharing",
+vim.keymap.set("n", "<leader>cs", "<Cmd>Peerpad<CR>", {
+    desc = "Peerpad: start sharing",
 })
 ```
 
 ## 사용
 
-주최자가 이름 있는 UTF-8 파일을 저장한 뒤 `:LiveShare`를 실행합니다.
+주최자가 이름 있는 UTF-8 파일을 저장한 뒤 `:Peerpad`를 실행합니다.
 다른 참가자는 같은 파일을 편집창에서 열 때 참여 안내를 받습니다.
-이미 열어 두었다면 `:LiveShareJoin`으로 참여합니다.
+이미 열어 두었다면 `:PeerpadJoin`으로 참여합니다.
 공유 저장소 없이 직접 연결하려면 주최자의 `:messages`에 나온 명령을 사용합니다.
 
 ```vim
-:LiveShareJoin <주최자주소> <포트> <토큰>
+:PeerpadJoin <주최자주소> <포트> <토큰>
 ```
 
 | 명령 / 키 | 동작 |
 | --- | --- |
-| `:LiveShare [포트] [바인드주소]` | 현재 소스 공유; 기본은 `0.0.0.0`의 자동 선택 포트 |
-| `:LiveShareJoin [주소 포트 토큰]` | 현재 파일의 세션 또는 지정 세션 참여 |
-| `:LiveShareStatus` | 역할·변경 번호·대기 편집·참가자 커서 확인 |
-| `:LiveShareStop` | 연결 종료; 주최자는 서버도 종료 |
+| `:Peerpad [포트] [바인드주소]` | 현재 소스 공유; 기본은 `0.0.0.0`의 자동 선택 포트 |
+| `:PeerpadJoin [주소 포트 토큰]` | 현재 파일의 세션 또는 지정 세션 참여 |
+| `:PeerpadStatus` | 역할·변경 번호·대기 편집·참가자 커서 확인 |
+| `:PeerpadStop` | 연결 종료; 주최자는 서버도 종료 |
 | `u` / `Ctrl+r` | 자신의 공유 편집만 취소 / 다시 실행 |
 | `:w` | 주최자만 원본 버퍼를 통해 동기화된 내용 저장 |
 

@@ -9,7 +9,7 @@ an NFS path alone does not provide a network connection between the editors.
 
 ## Example: pair debugging across servers
 
-Two developers open the same NFS file on different servers. One runs `:LiveShare`;
+Two developers open the same NFS file on different servers. One runs `:Peerpad`;
 the other accepts the join prompt. They edit together and see each other's unsaved
 changes and cursors. Only the owner saves the shared result to the original file.
 
@@ -109,23 +109,23 @@ and [vim-plug](https://github.com/junegunn/vim-plug) interfaces.
 
 Enable the suggested normal-mode mappings with `setup({ keymaps = true })`.
 They are off by default and existing mappings are never overwritten.
-`C` is uppercase (Shift+c); `<leader>Cs` means your leader key, Shift+c, then s.
+`P` is uppercase (Shift+p); `<leader>Ps` means your leader key, Shift+p, then s.
 Descriptions appear in keymap listings and which-key if you already use it; no
 which-key dependency is required.
 
 | Key | Command | Purpose |
 | --- | --- | --- |
-| `<leader>Cs` | `:LiveShare` | Start sharing the current source (s: start) |
-| `<leader>Cj` | `:LiveShareJoin` | Join the current file's advertised session (j: join) |
-| `<leader>Cq` | `:LiveShareStop` | Disconnect / stop hosting (q: quit) |
-| `<leader>Ci` | `:LiveShareStatus` | Show session information (i: info) |
+| `<leader>Ps` | `:Peerpad` | Start sharing the current source (s: start) |
+| `<leader>Pj` | `:PeerpadJoin` | Join the current file's advertised session (j: join) |
+| `<leader>Pq` | `:PeerpadStop` | Disconnect / stop hosting (q: quit) |
+| `<leader>Pi` | `:PeerpadStatus` | Show session information (i: info) |
 
-For manual host/port/token entry, use `:LiveShareJoin host port token`.
+For manual host/port/token entry, use `:PeerpadJoin host port token`.
 To use other keys, leave `keymaps = false` and map the commands yourself:
 
 ```lua
-vim.keymap.set("n", "<leader>cs", "<Cmd>LiveShare<CR>", {
-    desc = "Live share: start sharing",
+vim.keymap.set("n", "<leader>cs", "<Cmd>Peerpad<CR>", {
+    desc = "Peerpad: start sharing",
 })
 ```
 
@@ -134,32 +134,32 @@ vim.keymap.set("n", "<leader>cs", "<Cmd>LiveShare<CR>", {
 On the owner, open a named, editable UTF-8 source file, save it and run:
 
 ```vim
-:LiveShare
+:Peerpad
 ```
 
 This opens a dedicated shared buffer and advertises the session beside the source.
 Another participant opening that source in their active editor receives a join prompt.
-For files that were already open, use `:LiveShareJoin` without arguments.
+For files that were already open, use `:PeerpadJoin` without arguments.
 
 Manual joining works without shared storage:
 
 ```vim
-:LiveShareJoin <owner-host> <port> <token>
+:PeerpadJoin <owner-host> <port> <token>
 ```
 
 The owner can find that command in `:messages`. The default bind address is `0.0.0.0`
 and the port is selected automatically. For local-only collaboration:
 
 ```vim
-:LiveShare 0 127.0.0.1
+:Peerpad 0 127.0.0.1
 ```
 
 | Command / key | Action |
 | --- | --- |
-| `:LiveShare [port] [bind-address]` | Share the current source; at most one session per Neovim process |
-| `:LiveShareJoin [host port token]` | Join the current source's advertised session or an explicit session |
-| `:LiveShareStatus` | Show role, revision, pending edits and peer cursor positions |
-| `:LiveShareStop` | Disconnect; the owner also stops the server |
+| `:Peerpad [port] [bind-address]` | Share the current source; at most one session per Neovim process |
+| `:PeerpadJoin [host port token]` | Join the current source's advertised session or an explicit session |
+| `:PeerpadStatus` | Show role, revision, pending edits and peer cursor positions |
+| `:PeerpadStop` | Disconnect; the owner also stops the server |
 | `u` / `Ctrl+r` | Undo / redo your own edits in the shared buffer |
 | `:w` | Owner saves synchronized text through the original source buffer |
 
