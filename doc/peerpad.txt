@@ -26,17 +26,18 @@ Suggested normal-mode keys (off by default; existing maps are preserved):
     <leader>Pj   Join the current file's session
     <leader>Pq   Disconnect / stop hosting
     <leader>Pi   Show session information
-C is uppercase. Press your leader key, Shift+p, then s/j/q/i.
+P is uppercase. Press your leader key, Shift+p, then s/j/q/i.
 Define mapleader before loading the plugin.
-Set keymaps=false to use your own mappings. Commands always remain available.
+Use either keymaps=true or manual mappings, not both. For manual mappings,
+replace the installation setup with keymaps=false and map the four commands
+yourself; see README.md for a complete example. Commands remain available.
 
 INSTALLATION                                        *peerpad-install*
 >
     vim.pack.add({{ src = "https://github.com/Sunwook-Hwang/peerpad.nvim" }})
     require("peerpad").setup({ keymaps = true })
 <
-See README.md for lazy.nvim, packer.nvim and vim-plug examples. Private
-repositories require Git authentication with access to the repository.
+See README.md for lazy.nvim, packer.nvim and vim-plug examples.
 
 max_peers includes the owner (2-64). Sidecars use .<name>.flash-share for
 compatibility with FLASH. Only the active source editor prompts to join.

@@ -50,7 +50,7 @@ Add to your plugin specifications:
 ```
 
 Only the small setup module loads at startup. Transport and edit algorithms remain
-lazy-loaded until sharing is used. Loading only on commands would miss automatic
+lazy-loaded until starting, joining or discovering an advertised session. Loading only on commands would miss automatic
 join discovery for files opened before the plugin loads.
 
 ### packer.nvim
@@ -121,11 +121,24 @@ which-key dependency is required.
 | `<leader>Pi` | `:PeerpadStatus` | Show session information (i: info) |
 
 For manual host/port/token entry, use `:PeerpadJoin host port token`.
-To use other keys, leave `keymaps = false` and map the commands yourself:
+For manual mappings, replace `keymaps = true` in your installation example with
+the setup below. This reproduces the default keys explicitly; change the
+left-hand keys if desired. Choose automatic or manual registration, not both:
 
 ```lua
-vim.keymap.set("n", "<leader>cs", "<Cmd>Peerpad<CR>", {
+require("peerpad").setup({ keymaps = false })
+
+vim.keymap.set("n", "<leader>Ps", "<Cmd>Peerpad<CR>", {
     desc = "Peerpad: start sharing",
+})
+vim.keymap.set("n", "<leader>Pj", "<Cmd>PeerpadJoin<CR>", {
+    desc = "Peerpad: join current file",
+})
+vim.keymap.set("n", "<leader>Pq", "<Cmd>PeerpadStop<CR>", {
+    desc = "Peerpad: disconnect",
+})
+vim.keymap.set("n", "<leader>Pi", "<Cmd>PeerpadStatus<CR>", {
+    desc = "Peerpad: session information",
 })
 ```
 
@@ -184,8 +197,8 @@ require("peerpad").stop()
 
 - The bearer token authorizes access. TCP is not encrypted; use a trusted network or an SSH tunnel.
   Do not publish the token or forward it to people who should not edit the document.
-- Sidecars retain the `.<name>.flash-share` filename and protocol used by FLASH's
-  live-share branch, so both implementations can discover and join each other.
+- Sidecars retain the `.<name>.flash-share` filename and protocol used by the
+  Peerpad implementation bundled with FLASH, so both can discover and join each other.
 - Sidecars and their random temporary files are excluded through local Git `info/exclude`.
   Existing advertised sessions prevent a second owner. If safe advertisement fails,
   the manual command remains available.

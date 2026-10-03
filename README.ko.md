@@ -41,7 +41,8 @@ require("peerpad").setup({ keymaps = true })
 }
 ```
 
-시작할 때는 작은 설정 모듈만 로드합니다. 연결·편집 연산 코드는 공유할 때 로드합니다.
+시작할 때는 작은 설정 모듈만 로드합니다. 연결·편집 연산 코드는 공유 시작·참여
+또는 안내 파일이 있는 세션을 발견할 때 로드합니다.
 명령 실행 시에만 플러그인을 로드하면 그 전에 연 파일의 자동 참가 안내를 놓칠 수 있습니다.
 
 ### packer.nvim
@@ -112,11 +113,24 @@ which-key 자체는 필요하지 않습니다.
 | `<leader>Pi` | `:PeerpadStatus` | 세션 상태 확인 (info) |
 
 주소·포트·토큰을 직접 지정할 때는 `:PeerpadJoin 주소 포트 토큰`을 사용합니다.
-다른 키를 쓰려면 `keymaps = false`로 두고 직접 등록합니다.
+자동 등록 대신 직접 매핑하려면 설치 예시의 `keymaps = true`를 아래 설정으로
+바꾸세요. 다음은 같은 기본 키를 수동 등록하는 예시이며, 왼쪽 키를 원하는 키로
+바꿀 수 있습니다. 자동 등록과 수동 등록 중 하나만 사용하세요.
 
 ```lua
-vim.keymap.set("n", "<leader>cs", "<Cmd>Peerpad<CR>", {
+require("peerpad").setup({ keymaps = false })
+
+vim.keymap.set("n", "<leader>Ps", "<Cmd>Peerpad<CR>", {
     desc = "Peerpad: start sharing",
+})
+vim.keymap.set("n", "<leader>Pj", "<Cmd>PeerpadJoin<CR>", {
+    desc = "Peerpad: join current file",
+})
+vim.keymap.set("n", "<leader>Pq", "<Cmd>PeerpadStop<CR>", {
+    desc = "Peerpad: disconnect",
+})
+vim.keymap.set("n", "<leader>Pi", "<Cmd>PeerpadStatus<CR>", {
+    desc = "Peerpad: session information",
 })
 ```
 
@@ -152,7 +166,7 @@ vim.keymap.set("n", "<leader>cs", "<Cmd>Peerpad<CR>", {
 
 - 연결은 암호화되지 않습니다. 신뢰할 수 있는 네트워크나 SSH 터널을 사용하세요.
   토큰을 아는 사람은 참여할 수 있으므로 공개하지 마세요.
-- FLASH live-share 브랜치와 호환되도록 `.<파일명>.flash-share` 안내 파일과 통신 규약을 유지합니다.
+- FLASH에 포함된 Peerpad 구현과 호환되도록 `.<파일명>.flash-share` 안내 파일과 통신 규약을 유지합니다.
 - Git 프로젝트에서는 안내 파일과 임시 파일을 로컬 `info/exclude`에 제외합니다.
   안전하게 제외하거나 파일을 생성하지 못해도 수동 연결은 가능합니다.
   Git은 이 제외 처리에만 사용하며 편집 전송에는 필요하지 않습니다.
