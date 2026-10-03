@@ -11,6 +11,18 @@ NFS로 같은 파일을 보는 서로 다른 노드에서도 사용할 수 있�
 실행하고 다른 사람이 참여 안내를 수락하면, 저장 전 편집과 커서를 함께 볼 수 있습니다.
 완성된 내용은 주최자가 원본 파일에 저장합니다.
 
+## 데모
+
+[![키 입력과 양쪽 편집 반영을 보여주는 Peerpad 데모](assets/peerpad-demo.gif)](https://github.com/Sunwook-Hwang/peerpad.nvim/raw/refs/heads/main/assets/peerpad-demo.mp4)
+
+공유 시작 → 참여 → 양쪽 편집 → 주최자 저장 → 연결 종료를 보여줍니다.
+화면 하단에 사용한 키가 표시되며, 데모에서는 Space를 리더 키로 사용합니다.
+[MP4 보기·다운로드](https://github.com/Sunwook-Hwang/peerpad.nvim/raw/refs/heads/main/assets/peerpad-demo.mp4).
+
+macOS에서 독립적인 Neovim 프로세스 두 개를 로컬 TCP로 연결하고,
+실제 Neovim 화면 출력을 기록했습니다. 별도 서버나 NFS 환경을 촬영한 영상은 아닙니다.
+단계 설명과 키 입력 표시를 추가했으며 접속 토큰은 숨겼습니다.
+
 ## 설치
 
 공개 저장소에서 설치할 수 있습니다.

@@ -13,6 +13,19 @@ Two developers open the same NFS file on different servers. One runs `:Peerpad`;
 the other accepts the join prompt. They edit together and see each other's unsaved
 changes and cursors. Only the owner saves the shared result to the original file.
 
+## Demo
+
+[![Peerpad demo: edits synchronize between two Neovim processes, with keypresses shown](assets/peerpad-demo.gif)](https://github.com/Sunwook-Hwang/peerpad.nvim/raw/refs/heads/main/assets/peerpad-demo.mp4)
+
+Start sharing, join, edit from either side, save on the owner, and disconnect.
+The overlay shows the keys used; this demo uses Space as the leader.
+[Watch or download the MP4](https://github.com/Sunwook-Hwang/peerpad.nvim/raw/refs/heads/main/assets/peerpad-demo.mp4).
+
+Recorded from native Neovim UI output on macOS with two independent processes
+connected over local TCP. This illustrates the editing workflow; it is not a
+recording of separate servers or an NFS deployment. Captions and a keypress overlay
+were added. Session credentials are hidden.
+
 ## Requirements
 
 - Neovim 0.12 or newer on Linux or macOS.
